@@ -14,23 +14,25 @@ from time import gmtime, strftime
 
 def ProcessHistData():
 
-    HistData = pd.read_csv('/Users/andrejtupikin/pythonfirststeps/GetHistStockData/Data/BMW.csv', skiprows=1)
+    HistData = pd.read_csv('/Users/andrejtupikin/pythonfirststeps/GetHistStockData/Data/VOW.csv', skiprows=1)
     start_string = int(str(HistData).find('a14'))
     str_found = [m.start() for m in re.finditer('\n', str(HistData))]
     
-    array = [0 for y in range(0,len(str_found)-9)]
+    array = []
     
     for x in range(9, len(str_found)):
         
         delta_string = str(HistData)[str_found[x-1]+1:str_found[x]]
         
-        start = delta_string.find(',')
+        if not delta_string == "]":
         
-        array[x-9] = np.appendfloat(delta_string[start+1:-1])
+            start = delta_string.find(',')
         
-        print float(delta_string[start+1:-1])
+            array.append(float(delta_string[start+1:]))
         
-    plt.plot(array,'r')
+            plt.plot(array)
+            plt.pause(0.0001)
+            plt.cla()
     plt.show()
         
     #print string[166:-1].find("\n")
