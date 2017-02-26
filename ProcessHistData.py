@@ -14,26 +14,23 @@ from time import gmtime, strftime
 
 def ProcessHistData():
 
-    HistData = pd.read_csv('/Users/andrejtupikin/pythonfirststeps/GetHistStockData/Data/VOW.csv', skiprows=1)
+    HistData = pd.read_csv('/Users/andrejtupikin/pythonfirststeps/GetHistStockData/Data/AllData/15d_60s/BMW.csv', skiprows=1)
     start_string = int(str(HistData).find('a14'))
     str_found = [m.start() for m in re.finditer('\n', str(HistData))]
+    str_found_dates = [m.start() for m in re.finditer('a14', str(HistData))]
     
-    array = []
+    w, h = len(str_found_dates),3;
+    Matrix = [[0 for x in range(w)] for y in range(h)]
     
-    for x in range(9, len(str_found)):
+    for x in range(0,len(str_found_dates)):
+    
+        header = str(HistData)[str_found_dates[x]+1:str_found_dates[x]+11]
         
-        delta_string = str(HistData)[str_found[x-1]+1:str_found[x]]
+        Matrix[0][x] = (datetime.fromtimestamp(int(header)).strftime('%Y-%m-%d %H:%M:%S'))
         
-        if not delta_string == "]":
-        
-            start = delta_string.find(',')
-        
-            array.append(float(delta_string[start+1:]))
-        
-            plt.plot(array)
-            plt.pause(0.0001)
-            plt.cla()
-    plt.show()
+    print Matrix
+    
+    #data = str(HistData)[str_found_dates[0]+12:str_found_dates[1]]
         
     #print string[166:-1].find("\n")
     #print str_found[166:166+38]
