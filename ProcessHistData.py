@@ -24,11 +24,26 @@ def ProcessHistData():
     
     for x in range(0,len(str_found_dates)):
     
-        header = str(HistData)[str_found_dates[x]+1:str_found_dates[x]+11]
+        unix_date       = str(HistData)[str_found_dates[x]+1:str_found_dates[x]+11]
         
-        Matrix[0][x] = (datetime.fromtimestamp(int(header)).strftime('%Y-%m-%d %H:%M:%S'))
-        
-    print Matrix
+        Matrix[0][x]    = (datetime.fromtimestamp(int(unix_date)).strftime('%Y-%m-%d %H:%M:%S'))
+
+        if not (x == len(str_found_dates)-1):
+            
+            str_found = [m.start() for m in re.finditer('\n', str(HistData))]
+            
+            #Schleife über str_found
+            
+            
+            strStingCurDateToEnd    = str(HistData)[str_found_dates[x]:-1]
+            
+            intStartValDig          = int(strStingCurDateToEnd.find(','))
+            intEndValDig            = int(strStingCurDateToEnd.find('\n'))
+            
+            intCurVal               = float(str(strStingCurDateToEnd)[intStartValDig+1:intEndValDig])
+            
+            
+    
     
     #data = str(HistData)[str_found_dates[0]+12:str_found_dates[1]]
         
