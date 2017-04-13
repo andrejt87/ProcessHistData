@@ -19,7 +19,8 @@ def ProcessHistData():
     str_found = [m.start() for m in re.finditer('\n', str(HistData))]
     str_found_dates = [m.start() for m in re.finditer('a14', str(HistData))]
     
-    w, h = len(str_found_dates),3;
+    w, h = len(str_found_dates),510;
+    
     Matrix = [[0 for x in range(w)] for y in range(h)]
     
     for x in range(0,len(str_found_dates)):
@@ -27,19 +28,28 @@ def ProcessHistData():
         unix_date       = str(HistData)[str_found_dates[x]+1:str_found_dates[x]+11]
         
         Matrix[0][x]    = (datetime.fromtimestamp(int(unix_date)).strftime('%Y-%m-%d %H:%M:%S'))
-
-        if not (x == len(str_found_dates)):
-                       
-            strStingCurDateToEnd    = str(HistData)[str_found_dates[x]:-1]
+        
+        if (x < len(str_found_dates)-1): 
+        
+            strCurDateToNextDate = str(HistData)[str_found_dates[x]:str_found_dates[x+1]]
             
-            intStartValDig          = int(strStingCurDateToEnd.find(','))
-            intEndValDig            = int(strStingCurDateToEnd.find('\n'))
+        else:
+                
+            strCurDateToNextDate = str(HistData)[str_found_dates[x]:-1]
+        
+        strFoundValuesStart = [m.start() for m in re.finditer(',', str(strCurDateToNextDate))]
+        strFoundValuesEnd   = [m.start() for m in re.finditer('\n', str(strCurDateToNextDate))]
+        
+        print len(strFoundValuesStart)
             
-            intCurVal               = float(str(strStingCurDateToEnd)[intStartValDig+1:intEndValDig])
+        for y in range(1,len(strFoundValuesStart)+1):
+                
+            intCurVal = float((strCurDateToNextDate)[strFoundValuesStart[y-1]+1:strFoundValuesEnd[y-1]]);
             
-            Matrix[1][x]    = intCurVal
+            Matrix[y][x] = intCurVal;
+                
+    print Matrix
             
-            print Matrix
     
     
     #data = str(HistData)[str_found_dates[0]+12:str_found_dates[1]]
