@@ -19,7 +19,7 @@ def ProcessHistData():
     str_found = [m.start() for m in re.finditer('\n', str(HistData))]
     str_found_dates = [m.start() for m in re.finditer('a14', str(HistData))]
     
-    w, h = len(str_found_dates),510;
+    w, h = len(str_found_dates),511;
     
     Matrix = [[0 for x in range(w)] for y in range(h)]
     
@@ -40,13 +40,23 @@ def ProcessHistData():
         strFoundValuesStart = [m.start() for m in re.finditer(',', str(strCurDateToNextDate))]
         strFoundValuesEnd   = [m.start() for m in re.finditer('\n', str(strCurDateToNextDate))]
         
-        print len(strFoundValuesStart)
+        #print int((strCurDateToNextDate)[strFoundValuesEnd[0]:strFoundValuesStart[1]]);
             
         for y in range(1,len(strFoundValuesStart)+1):
                 
             intCurVal = float((strCurDateToNextDate)[strFoundValuesStart[y-1]+1:strFoundValuesEnd[y-1]]);
             
-            Matrix[y][x] = intCurVal;
+            if (y == len(strFoundValuesStart)):
+                
+                intNumber = intNumber + 1;
+                
+            else:
+            
+                intNumber = int((strCurDateToNextDate)[strFoundValuesEnd[y-1]:strFoundValuesStart[y]]);
+            
+            Matrix[intNumber][x] = intCurVal;
+            
+        print [row[x] for row in Matrix]
                 
     print Matrix
             
