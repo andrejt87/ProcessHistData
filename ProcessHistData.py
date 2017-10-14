@@ -11,6 +11,7 @@ import regex as re
 from googlefinance import getQuotes
 from datetime import datetime
 from time import gmtime, strftime
+//test
 
 def ProcessHistData(strCurrentMnemonic):
     
